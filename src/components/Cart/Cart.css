@@ -1,0 +1,54 @@
+.cart {
+  width: 80%; /* Adjust width as needed */
+  margin: 20px auto; /* Center the cart in the middle of the page */
+  background-color: #f8f8f8; /* Light background for the cart area */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for 3D effect */
+}
+
+.cart-items {
+  overflow: auto; /* Ensures the cart doesn't overflow the div */
+}
+
+.cart-item-title,
+.cart-items-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.cart-item-title {
+  background-color: #e0e0e0; /* Slightly darker background for the titles */
+  font-weight: bold;
+}
+
+.cart-item-title p,
+.cart-items-item p {
+  flex: 1;
+  text-align: center;
+  margin: 0 10px;
+}
+
+.cart-items-item {
+  border-bottom: 1px solid #ddd; /* Separator for items */
+}
+
+.cart-items-item img {
+  flex: 0 0 50px; /* Do not grow or shrink but remain at 50px width */
+  margin-right: 10px; /* Space between image and text */
+}
+
+.cart-items-item button {
+  background-color: #ff4d4d; /* Red color for the remove button */
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.cart-items-item button:hover {
+  background-color: #ff6666; /* Lighter red on hover */
+}

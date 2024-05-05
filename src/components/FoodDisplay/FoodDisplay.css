@@ -1,0 +1,51 @@
+.food-display {
+  margin: 20px;
+  padding: 20px;
+  background-color: #f9f9f9; /* Light background for the section */
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.food-display h2 {
+  text-align: center;
+  color: #333;
+}
+
+.food-display-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+@media (max-width: 900px) {
+  .food-display-list {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+}
+.food-display .pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  padding-bottom: 20px;
+}
+
+.food-display .pagination button {
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  color: #333;
+  text-align: center;
+  padding: 8px 16px;
+  margin: 0 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.food-display .pagination button:hover {
+  background-color: #e9e9e9;
+}
+
+.food-display .pagination button.active {
+  background-color: tomato;
+  color: white;
+  border-color: tomato;
+}

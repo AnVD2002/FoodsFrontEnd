@@ -1,0 +1,93 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 20px;
+  position: relative;
+}
+.navbar .logo {
+  width: 150px;
+}
+.navbar-menu {
+  display: flex;
+  list-style: none;
+  gap: 20px;
+  color: #49557e;
+  font-size: 18px;
+}
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  position: relative;
+}
+.navbar button {
+  margin-bottom: 35px;
+  background-color: transparent;
+  font-size: 16px;
+  color: #49557e;
+  border: 1px solid tomato;
+  padding: 10px 30px;
+  border-radius: 50px;
+  transition: 0.3s;
+  cursor: pointer;
+}
+.navbar button:hover {
+  background-color: #fff4f2;
+}
+.navbar .active {
+  padding-bottom: 2px;
+  border-bottom: 2px solid #49557e;
+}
+.navbar li {
+  cursor: pointer;
+}
+.navbar-search-icon {
+  position: relative;
+}
+.navbar-search-icon .dot {
+  position: absolute;
+  min-width: 10px;
+  min-height: 10px;
+  background-color: tomato;
+  border-radius: 5px;
+  top: -8px;
+  right: -8px;
+}
+
+/* CSS cho phần input tìm kiếm */
+.navbar-right input[type="text"] {
+  border: none;
+  border-bottom: 2px solid #49557e;
+  padding: 5px;
+  font-size: 16px;
+  width: 200px;
+  margin-right: 10px;
+  transition: border-color 0.3s;
+}
+
+.navbar-right input[type="text"]:focus {
+  outline: none;
+  border-color: tomato;
+}
+
+.search-results {
+  position: absolute;
+  top: 65%; /* Đặt ngay dưới input */
+  left: 68px; /* Căn lề trái với khung nhập */
+  width: 200px; /* Đảm bảo rằng chiều rộng của kết quả tìm kiếm khớp với chiều rộng của input */
+  background: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 0 0 4px 4px; /* Bo tròn các góc dưới của khung kết quả */
+  z-index: 1000; /* Đảm bảo kết quả tìm kiếm hiển thị trên các thành phần khác */
+}
+
+.search-results div {
+  padding: 10px;
+  border-top: 1px solid #eee; /* Thêm đường phân cách giữa các mục */
+  cursor: pointer;
+}
+
+.search-results div:hover {
+  background-color: #f9f9f9; /* Hiệu ứng hover cho từng mục */
+}

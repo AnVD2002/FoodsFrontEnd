@@ -1,0 +1,24 @@
+.popup {
+  position: fixed;
+  top: 20px; /* Khoảng cách từ đỉnh màn hình, bạn có thể điều chỉnh theo ý muốn */
+  right: 20px; /* Khoảng cách từ cạnh phải màn hình */
+  padding: 10px 20px;
+  background-color: tomato; /* Màu nền xanh cho thông báo thành công */
+  color: white;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1001; /* Đảm bảo popup nằm trên các thành phần khác */
+  width: auto; /* Chiều rộng tự động dựa vào nội dung */
+  text-align: center;
+  animation: slideInFromRight 0.5s ease-out forwards;
+  margin-top: 200px;
+}
+
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}

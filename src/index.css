@@ -1,0 +1,43 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+
+/* Reset CSS */
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Outfit", sans-serif; /* Sửa lại cách gọi font-family để đúng cú pháp */
+}
+
+body {
+  min-height: 100vh;
+  background-color: #f5f5f5; /* Thêm màu nền nhẹ cho body để dễ nhìn */
+  display: flex;
+  flex-direction: column; /* Đảm bảo các phần tử trên trang có thể sắp xếp dọc đúng đắn */
+}
+
+a {
+  text-decoration: none;
+  color: inherit; /* Kế thừa màu chữ từ parent, không cần chỉ định lại nếu không thay đổi */
+}
+
+.app {
+  width: 80%;
+  margin: 0 auto; /* Sửa từ 'margin: auto' thành 'margin: 0 auto' để rõ ràng chỉ căn giữa ngang */
+  padding: 20px 0; /* Thêm padding trên và dưới để tránh content dính vào edges */
+  background-color: #fff; /* Nên đặt màu nền cho .app để nó nổi bật hơn so với body */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Thêm bóng cho container để tăng độ sắc nét và độ tương phản */
+}
+
+/* Animation */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(
+      -10px
+    ); /* Thêm hiệu ứng di chuyển nhẹ từ phía trên xuống */
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

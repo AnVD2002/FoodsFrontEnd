@@ -1,0 +1,14 @@
+.app {
+  width: 90%;
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.app:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
