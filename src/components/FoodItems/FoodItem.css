@@ -1,3 +1,5 @@
+@import "~@fortawesome/fontawesome-free/css/all.min.css";
+
 .food-item {
   display: flex;
   flex-direction: column;
@@ -6,7 +8,8 @@
   border-radius: 8px;
   overflow: hidden;
   margin: 10px;
-  width: 250px; /* Width of each food item */
+  width: 250px;
+  height: 350px; /* Width of each food item */
   max-width: 100%; /* Ensures responsiveness */
 }
 
@@ -15,14 +18,14 @@
 }
 
 .food-item-image-container {
-  width: 150px;
-  height: 150px;
+  width: 200px;
+  height: 200px;
   overflow: hidden;
 }
 
 .food-item-image {
-  width: 100%;
-  height: 100%;
+  width: 150px;
+  height: 150px;
   object-fit: cover;
 }
 
@@ -55,5 +58,22 @@
 .food-item-price {
   font-size: 16px;
   font-weight: bold;
-  color: #e63946; /* Adjust the color to fit your theme */
+  color: #e63946;
+}
+
+.fa-shopping-cart {
+  cursor: pointer;
+  margin-left: 50px;
+  height: 40px;
+}
+.stars {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+}
+
+.star {
+  color: #ffd700; /* Màu vàng */
+  font-size: 16px; /* Kích thước sao */
+  margin-right: 2px; /* Khoảng cách giữa các sao */
 }

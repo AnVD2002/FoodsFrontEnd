@@ -1,20 +1,27 @@
 import React, { useContext } from "react";
 import "./navbar.css";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
 import { ShopContext } from "../Context/ShopContext";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faUser,
+  faUserEdit,
+  faKey,
+  faSignOutAlt,
+  faHistory,
+} from "@fortawesome/free-solid-svg-icons";
 
 const Navbar = ({ setShowLogin }) => {
   const [menu, setMenu] = useState("home");
   const navigate = useNavigate();
   const { isLoggedIn, logout } = useAuth();
-
   const { allFood } = useContext(ShopContext);
-
   const location = useLocation();
+
   useEffect(() => {
     setSearchResults([]);
   }, [location.pathname]);
@@ -29,6 +36,7 @@ const Navbar = ({ setShowLogin }) => {
     navigate(`/${path}`);
     setSearchResults([]);
   };
+
   const [searchResults, setSearchResults] = useState([]);
   const handleSearch = (query) => {
     if (!query.trim()) {
@@ -41,9 +49,30 @@ const Navbar = ({ setShowLogin }) => {
     setSearchResults(filteredFoods);
   };
 
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownVisible(false);
+      }
+    };
+
+    if (dropdownVisible) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdownVisible]);
+
   return (
     <div className="navbar">
-      <img src={`${process.env.PUBLIC_URL}/assets/logo.png`} alt="" />
+      <img src={`${process.env.PUBLIC_URL}/assets/shopee.png`} alt="" />
       <ul className="navbar-menu">
         <li
           onClick={() => handleNavigate("")}
@@ -96,11 +125,37 @@ const Navbar = ({ setShowLogin }) => {
               alt=""
             />
           </Link>
-
           <div className="dot"></div>
         </div>
         {isLoggedIn ? (
-          <button onClick={handleLogout}>Log Out</button>
+          <div className="user-profile" ref={dropdownRef}>
+            <div
+              className="profile-icon"
+              onClick={() => setDropdownVisible(!dropdownVisible)}
+            >
+              <img
+                src={`${process.env.PUBLIC_URL}/assets/profile_icon.png`}
+                alt="Profile"
+              />
+            </div>
+            <div className={`dropdown-menu ${dropdownVisible ? "show" : ""}`}>
+              <div onClick={() => navigate("/view-profile")}>
+                <FontAwesomeIcon icon={faUser} /> View Profile
+              </div>
+              <div onClick={() => navigate("/update-profile")}>
+                <FontAwesomeIcon icon={faUserEdit} /> Update Profile
+              </div>
+              <div onClick={() => navigate("/change-password")}>
+                <FontAwesomeIcon icon={faKey} /> Change Password
+              </div>
+              <div onClick={() => navigate("/purchase-history")}>
+                <FontAwesomeIcon icon={faHistory} /> Purchase History
+              </div>
+              <div onClick={handleLogout}>
+                <FontAwesomeIcon icon={faSignOutAlt} /> Log Out
+              </div>
+            </div>
+          </div>
         ) : (
           <button onClick={() => setShowLogin(true)}>Sign In</button>
         )}

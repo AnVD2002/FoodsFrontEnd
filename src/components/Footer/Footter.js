@@ -1,5 +1,6 @@
 import React from "react";
 import "./Footter.css";
+import MiniMap from "../MiniMap/MiniMap";
 const Footter = () => {
   return (
     <div className="footer" id="footer">
@@ -39,7 +40,9 @@ const Footter = () => {
           </ul>
         </div>
       </div>
+      <MiniMap></MiniMap>
       <hr />
+
       <p className="footer-copyright">
         Copyright 2024 @ Tomato.com - All Right Reserved.
       </p>

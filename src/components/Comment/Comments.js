@@ -12,7 +12,7 @@ const Comments = ({ foodID }) => {
   const [comments, setComments] = useState([]);
 
   const numFoodID = Number(foodID);
-  const getUserIDFromToken = () => {
+  const getUserNameFromToken = () => {
     const token = Cookies.get("accessToken");
     if (token) {
       try {
@@ -27,7 +27,7 @@ const Comments = ({ foodID }) => {
       return null;
     }
   };
-  const userID = getUserIDFromToken();
+  const name = getUserNameFromToken();
 
   useEffect(() => {
     const fetchAllCommentByFoodID = async () => {
@@ -36,6 +36,7 @@ const Comments = ({ foodID }) => {
           `http://localhost:8080/api/v1/food/commentResponseByFoodID?foodID=${numFoodID}`
         );
         setComments(response.data);
+        console.log(response.data);
       } catch (error) {
         console.log("errror:", error);
       }
@@ -53,17 +54,17 @@ const Comments = ({ foodID }) => {
     replies.sort(
       (a, b) => new Date(a.createAt).getTime() - new Date(b.createAt).getTime()
     );
-    console.log("Replies for comment ID", commentID, replies);
     return replies;
   };
 
   const rootComments = comments.filter((comment) => comment.parentID === 0);
-  const addComment = async (text) => {
+  const addComment = async (text, rating) => {
     try {
       const data = {
-        userID: userID,
+        userName: name,
         foodID: numFoodID,
         content: text,
+        rating: rating,
       };
       const response = await axios.post(
         "http://localhost:8080/api/v1/food/comment",
@@ -96,7 +97,7 @@ const Comments = ({ foodID }) => {
   const replyComment = async (text, parentID) => {
     try {
       const data = {
-        userID: userID,
+        userName: name,
         foodID: numFoodID,
         content: text,
         parentID: parentID,

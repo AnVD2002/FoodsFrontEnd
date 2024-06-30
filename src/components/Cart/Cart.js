@@ -4,12 +4,16 @@ import { useEffect } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
+import "./Cart.css";
+import { useCallback } from "react";
+import CheckoutForm from "./ChechoutForm";
 
 import { useState } from "react";
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
+  const [isCheckoutFormVisible, setIsCheckoutFormVisible] = useState(false);
 
-  const getUserIDFromToken = () => {
+  const getUserNameFromToken = () => {
     const token = Cookies.get("accessToken");
     if (token) {
       try {
@@ -24,25 +28,32 @@ const Cart = () => {
       return null;
     }
   };
-  const userID = getUserIDFromToken();
-  const userNumberID = Number(userID);
 
-  const fetchCartItems = async () => {
+  const userName = getUserNameFromToken();
+
+  const fetchCartItems = useCallback(async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/v1/cart/getCartItems?userID=${userNumberID}`
+        `http://localhost:8080/api/v1/cart/getCartItems?userName=${userName}`
       );
-      setCartItems(response.data.body);
+      const items = response.data.body;
+      if (Array.isArray(items)) {
+        setCartItems(items);
+      } else {
+        setCartItems([]);
+        console.error("Invalid response format:", items);
+      }
     } catch (error) {
       console.error("Failed to load cart items:", error);
+      setCartItems([]);
     }
-  };
+  }, [userName]);
 
   useEffect(() => {
-    if (userID) {
+    if (userName) {
       fetchCartItems();
     }
-  }, [userID, userNumberID]);
+  }, [userName, fetchCartItems]);
 
   const removeCartItem = async (cartItemID) => {
     try {
@@ -54,6 +65,23 @@ const Cart = () => {
       console.error("Failed to remove cart item:", error);
     }
   };
+
+  const updateCartItemQuantity = async (cartItemID, quantity) => {
+    try {
+      await axios.put(`http://localhost:8080/api/v1/cart/updateCartItems`, {
+        cartItemID: cartItemID,
+        quantity: quantity,
+      });
+      fetchCartItems();
+    } catch (error) {
+      console.error("Failed to update cart item quantity:", error);
+    }
+  };
+
+  const totalPrice =
+    Array.isArray(cartItems) && cartItems.length > 0
+      ? cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
+      : 0;
 
   return (
     <div className="cart">
@@ -68,7 +96,7 @@ const Cart = () => {
         </div>
         <br />
         <hr />
-        {cartItems.length > 0 ? (
+        {Array.isArray(cartItems) && cartItems.length > 0 ? (
           cartItems.map((item) => (
             <div
               key={item.cartItemID}
@@ -81,7 +109,17 @@ const Cart = () => {
               />
               <p>{item.foodDetailName}</p>
               <p>${item.price}</p>
-              <p>{item.quantity}</p>
+              <input
+                type="number"
+                value={item.quantity}
+                onChange={(e) =>
+                  updateCartItemQuantity(
+                    item.cartItemID,
+                    parseInt(e.target.value)
+                  )
+                }
+                min="1"
+              />
               <p>${item.price * item.quantity}</p>
               <button onClick={() => removeCartItem(item.cartItemID)}>
                 Remove
@@ -92,6 +130,38 @@ const Cart = () => {
           <p>No items in the cart.</p>
         )}
       </div>
+
+      <div className="cart-bottom">
+        <div className="cart-total">
+          <h2>Cart total</h2>
+          <div>
+            <div className="cart-total-details">
+              <p>Sub Total</p>
+              <p>{totalPrice}$</p>
+            </div>
+            <hr />
+            <div className="cart-total-details">
+              <p>Delivery fee</p>
+              <p>{0.5}$</p>
+            </div>
+            <hr />
+            <div className="cart-total-details">
+              <p>Total</p>
+              <p>{totalPrice + 0.5}$</p>
+            </div>
+            <button onClick={() => setIsCheckoutFormVisible(true)}>
+              CHECK OUT
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {isCheckoutFormVisible && (
+        <CheckoutForm
+          onClose={() => setIsCheckoutFormVisible(false)}
+          totalPrice={totalPrice + 0.5}
+        />
+      )}
     </div>
   );
 };

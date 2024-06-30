@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import "./ExploreMenu.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import ScrollAnimation from "../Animation/ScrollAnimation";
 const ExploreMenu = () => {
   const navigate = useNavigate();
   const [foods, setFoods] = useState([]);
@@ -32,17 +33,18 @@ const ExploreMenu = () => {
       <div className="explore-menu-list">
         {foods.map((item) => {
           return (
-            <div
-              className="explore-menu-list-item"
-              key={item.foodCategoryID}
-              onClick={() => handleCategoryClick(item.foodCategoryID)}
-            >
-              <img
-                src={`${process.env.PUBLIC_URL}/assets/${item.image}`}
-                alt=""
-              />
-              <p>{item.foodCategoryName}</p>
-            </div>
+            <ScrollAnimation key={item.foodCategoryID}>
+              <div
+                className="explore-menu-list-item"
+                onClick={() => handleCategoryClick(item.foodCategoryID)}
+              >
+                <img
+                  src={`${process.env.PUBLIC_URL}/assets/${item.image}`}
+                  alt=""
+                />
+                <p>{item.foodCategoryName}</p>
+              </div>
+            </ScrollAnimation>
           );
         })}
       </div>

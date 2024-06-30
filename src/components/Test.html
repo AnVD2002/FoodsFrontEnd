@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Simple Webpage</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 0;
+      }
+      header {
+        background-color: #ff6347;
+        color: white;
+        text-align: center;
+        padding: 20px;
+        position: relative; /* Thêm thuộc tính này để bố trí hình tròn */
+      }
+      .circle {
+        width: 50px;
+        height: 50px;
+        background-color: white;
+        border-radius: 50%; /* Tạo hình tròn */
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      .greeting-box {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin: 20px auto;
+        margin-right: 20px;
+        max-width: 400px;
+        position: relative; /* Thêm để kiểm soát z-index */
+        z-index: 10; /* Đảm bảo hộp nổi lên trên các phần khác */
+        margin-top: -30px; /* Điều chỉnh vị trí theo yêu cầu của bạn */
+      }
+
+      .additional-box {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin: 20px auto;
+        max-width: 400px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>My Simple Webpage</h1>
+      <div class="circle"></div>
+      <!-- Thêm hình tròn vào header -->
+    </header>
+    <div class="greeting-box">
+      <p>Hi, Duc Anh!</p>
+    </div>
+    <div class="additional-box">
+      <!-- Thêm box mới bên dưới -->
+      <p>Welcome to the additional content box!</p>
+    </div>
+  </body>
+</html>

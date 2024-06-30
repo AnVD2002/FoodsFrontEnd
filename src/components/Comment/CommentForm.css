@@ -5,25 +5,34 @@
   border: 1px solid #d6bfbf;
   border-radius: 5px;
   margin-bottom: 10px;
-  resize: none; /* Ngăn không cho điều chỉnh kích thước */
-  font-size: 16px; /* Kích thước phông chữ cho textarea */
+  resize: none;
+  font-size: 16px;
 }
 
 .comment-form-button {
   padding: 10px 20px;
-  background-color: rgb(197, 86, 66); /* Màu nền nút */
+  background-color: rgb(197, 86, 66);
   color: white;
   border: none;
   border-radius: 5px;
-  cursor: pointer; /* Hiệu ứng con trỏ khi di chuyển chuột vào nút */
-  transition: background-color 0.3s ease; /* Chuyển đổi màu nền khi hover */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .comment-form-button:disabled {
-  background-color: #ccc; /* Màu nền cho nút khi bị vô hiệu hóa */
-  cursor: not-allowed; /* Hiệu ứng con trỏ cho nút bị vô hiệu hóa */
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 
 .comment-form-button:hover:enabled {
-  background-color: tomato; /* Màu nền cho nút khi hover và không bị vô hiệu hóa */
+  background-color: tomato;
+}
+.star-rating img {
+  width: 20px;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.star-rating img:hover {
+  opacity: 0.8;
 }

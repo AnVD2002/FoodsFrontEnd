@@ -1,97 +1,120 @@
-.login-popup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1000;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.login-popup-container {
-  width: max(23vw, 330px);
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  animation: fadeIn 0.5s;
-}
-
-.login-popup-title {
-  font-size: 18px;
-  color: #333;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.login-popup-title img {
-  cursor: pointer;
-  width: 24px; /* Slightly larger for easier interaction */
-}
-
-.login-popup-inputs input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px; /* Added margin for better spacing */
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.login-popup-container button {
-  padding: 10px 0;
-  background-color: tomato; /* A more soothing blue */
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.login-popup-container button:hover {
-  background-color: tomato; /* Darker shade on hover */
-}
-
-.login-popup-condition {
-  font-size: 12px; /* Smaller text for less emphasis */
-  display: flex;
-  align-items: center;
-}
-.login-popup-remember {
-  font-size: 12px; /* Smaller text for less emphasis */
-  display: flex;
-  align-items: center;
-}
-
-.login-popup-condition input[type="checkbox"] {
-  margin-right: 5px; /* Proper spacing between checkbox and text */
-}
-.login-popup-remember input[type="checkbox"] {
-  margin-right: 5px; /* Proper spacing between checkbox and text */
-}
-
-.login-popup p {
-  font-size: 14px; /* Standard font size for better readability */
-  color: #666; /* Softer color for the text */
-}
-
-.login-popup p span {
-  color: #0056b3;
-  cursor: pointer;
-  text-decoration: underline; /* Makes it clear that it's clickable */
-}
-
-@keyframes fadeIn {
+@keyframes slideIn {
   from {
+    transform: translate(-50%, -60%);
     opacity: 0;
   }
   to {
+    transform: translate(-50%, -50%);
     opacity: 1;
   }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
+  to {
+    transform: translate(-50%, -60%);
+    opacity: 0;
+  }
+}
+
+.login-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  width: 400px;
+  max-width: 90%;
+  padding: 20px;
+  z-index: 1000;
+  animation: slideIn 0.3s ease-out forwards;
+}
+
+.login-popup.closing {
+  animation: slideOut 0.3s ease-out forwards;
+}
+
+.login-popup-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-popup-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.login-popup-title h2 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.close-icon {
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+}
+
+.login-popup-inputs {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.submit-button {
+  width: 100%;
+  padding: 10px;
+  background-color: tomato;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.submit-button:hover {
+  background-color: #e04e3d;
+}
+
+.login-popup-remember,
+.login-popup-condition {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.login-popup-remember p,
+.login-popup-condition p {
+  margin-left: 10px;
+  font-size: 14px;
+}
+
+.login-popup p {
+  font-size: 14px;
+}
+
+.login-popup span {
+  color: tomato;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.login-popup span:hover {
+  text-decoration: underline;
 }

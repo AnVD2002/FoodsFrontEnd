@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import "./LoginPopup.css";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "./LoginPopup.css";
 
 const LoginPopup = ({ setShowLogin }) => {
   const { login } = useAuth();
@@ -11,6 +13,8 @@ const LoginPopup = ({ setShowLogin }) => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
+  const [closing, setClosing] = useState(false);
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -25,12 +29,11 @@ const LoginPopup = ({ setShowLogin }) => {
           navigate("/confirmSignUp", {
             state: { accountInfo: response.data },
           });
+        } else {
+          toast.error(response.data.message);
         }
       } catch (error) {
-        console.error(
-          "Failed to create account:",
-          error.response?.data?.message || error.message
-        );
+        toast.error("Failed to create account. Please try again.");
       }
     } else if (currState === "Login") {
       try {
@@ -38,24 +41,41 @@ const LoginPopup = ({ setShowLogin }) => {
           "http://localhost:8080/api/v1/account/login",
           { username, password }
         );
-        login(response.data.accessToken, response.data.expiryToken);
-        setShowLogin(false);
-        navigate("/");
+
+        if (response.data.statusCodeValue === 200) {
+          login(
+            response.data.body.accessToken,
+            response.data.body.refreshToken,
+            rememberMe
+          );
+          setShowLogin(false);
+          navigate("/");
+        } else {
+          toast.error(response.data.body.message);
+        }
       } catch (error) {
-        console.error("Failed to login:", error);
+        toast.error(
+          "Failed to login. Please check your credentials and try again."
+        );
       }
     }
   };
 
+  const handleClose = () => {
+    setClosing(true);
+    setTimeout(() => setShowLogin(false), 300);
+  };
+
   return (
-    <div className="login-popup">
+    <div className={`login-popup ${closing ? "closing" : ""}`}>
       <form onSubmit={handleFormSubmit} className="login-popup-container">
         <div className="login-popup-title">
           <h2>{currState}</h2>
           <img
-            onClick={() => setShowLogin(false)}
+            onClick={handleClose}
             src={`${process.env.PUBLIC_URL}/assets/cross_icon.png`}
             alt="Close"
+            className="close-icon"
           />
         </div>
         <div className="login-popup-inputs">
@@ -65,6 +85,7 @@ const LoginPopup = ({ setShowLogin }) => {
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              className="input-field"
             />
           )}
           <input
@@ -72,42 +93,44 @@ const LoginPopup = ({ setShowLogin }) => {
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            className="input-field"
           />
           <input
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            className="input-field"
           />
         </div>
-        <button type="submit">
+        <button type="submit" className="submit-button">
           {currState === "Sign Up" ? "Create Account" : "Login"}
         </button>
 
-        {currState === "Login" ? (
+        {currState === "Login" && (
           <div className="login-popup-remember">
-            <input type="checkbox" required />
+            <input
+              type="checkbox"
+              checked={rememberMe}
+              onChange={() => setRememberMe(!rememberMe)}
+            />
             <p>Remember password</p>
-          </div>
-        ) : (
-          <div className="login-popup-condition">
-            <input type="checkbox" required />
-            <p>By continuing, I agree to the Terms of Use & Privacy Policy</p>
           </div>
         )}
 
         {currState === "Login" ? (
           <p>
             Create a new account?
-            <span onClick={() => setCurrState("Sign Up")}>Click here</span>
+            <span onClick={() => setCurrState("Sign Up")}> Click here</span>
           </p>
         ) : (
           <p>
             Already have an account?
-            <span onClick={() => setCurrState("Login")}>Login</span>
+            <span onClick={() => setCurrState("Login")}> Login</span>
           </p>
         )}
       </form>
+      <ToastContainer />
     </div>
   );
 };

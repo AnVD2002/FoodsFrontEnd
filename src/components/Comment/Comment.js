@@ -3,6 +3,8 @@ import "./Comment.css";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import { useState } from "react";
+import { useEffect } from "react";
+import axios from "axios";
 
 const Comment = ({
   comment,
@@ -11,9 +13,9 @@ const Comment = ({
   replyComment,
   getReplies,
 }) => {
-  console.log(replies);
   const [showReplyInput, setShowReplyInput] = useState(false);
   const [replyText, setReplyText] = useState("");
+  const [userID, setUserID] = useState(null);
   const getUserIDFromToken = () => {
     const token = Cookies.get("accessToken");
     if (token) {
@@ -39,7 +41,27 @@ const Comment = ({
     setShowReplyInput(false);
   };
 
-  const userID = getUserIDFromToken();
+  const userName = getUserIDFromToken();
+
+  useEffect(() => {
+    const getUserID = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8080/api/v1/account/getUserID`,
+          {
+            params: { username: userName },
+          }
+        );
+        setUserID(response.data.body);
+        console.log(response.data.body);
+      } catch (error) {
+        console.error("Error fetching user ID:", error);
+      }
+    };
+
+    getUserID();
+  }, [userName]);
+
   const userNumberID = Number(userID);
   const canReply = Boolean(userID);
   const canEdit = userNumberID === comment.userID;

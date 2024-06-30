@@ -1,0 +1,179 @@
+.container {
+  margin-top: 50px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-family: "Arial", sans-serif;
+  color: #333;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: "Arial", sans-serif;
+}
+
+.table th,
+.table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+  transition: background-color 0.3s;
+}
+
+.table th {
+  background-color: #f8f8f8;
+  color: #333;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 14px;
+}
+
+.table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.action-icon {
+  margin: 0 5px;
+  cursor: pointer;
+  transition: transform 0.2s, color 0.2s;
+}
+
+.action-icon:hover {
+  transform: scale(1.1);
+  color: #007bff;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+.btn-primary:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5);
+}
+/* Basic styling for the entire form */
+/* Basic styling for the entire form */
+form {
+  background-color: #f9f9f9; /* Light grey background */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap; /* Ensures responsiveness */
+}
+
+select,
+input,
+button {
+  padding: 10px 15px;
+  border: 2px solid #ccc; /* Light grey border */
+  border-radius: 5px;
+  font-size: 16px;
+  color: #333;
+}
+
+select:hover,
+input:hover,
+button:hover {
+  border-color: #88a2ac; /* Change border on hover */
+}
+
+select:focus,
+input:focus {
+  outline: none;
+  border-color: #0056b3; /* Blue border for focus */
+  box-shadow: 0 0 5px rgba(0, 86, 179, 0.25);
+}
+
+button {
+  background-color: #333; /* Blue background */
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-bottom: 40px;
+}
+
+button:hover {
+  background-color: #333; /* Darker blue when hovered */
+}
+
+/* Placeholder styling */
+input::placeholder {
+  color: #aaa;
+}
+
+/* Adjusting select dropdowns if needed */
+select {
+  appearance: none; /* Disable default styling */
+  background-color: #fff;
+  cursor: pointer;
+}
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.pagination-button {
+  padding: 8px 16px;
+  margin: 0 4px;
+  background-color: #2b2828;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.pagination-button:hover {
+  background-color: #e0e0e0;
+}
+
+.pagination-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.pagination-info {
+  margin: 0 10px;
+  font-size: 16px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  form {
+    flex-direction: column;
+    gap: 15px;
+  }
+}

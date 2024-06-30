@@ -5,6 +5,10 @@
   margin: 0 20px;
   position: relative;
 }
+
+.navbar img {
+  margin-left: 20px;
+}
 .navbar .logo {
   width: 150px;
 }
@@ -14,6 +18,7 @@
   gap: 20px;
   color: #49557e;
   font-size: 18px;
+  margin-left: 200px;
 }
 .navbar-right {
   display: flex;
@@ -22,7 +27,6 @@
   position: relative;
 }
 .navbar button {
-  margin-bottom: 35px;
   background-color: transparent;
   font-size: 16px;
   color: #49557e;
@@ -31,6 +35,7 @@
   border-radius: 50px;
   transition: 0.3s;
   cursor: pointer;
+  margin-top: 30px;
 }
 .navbar button:hover {
   background-color: #fff4f2;
@@ -73,21 +78,85 @@
 
 .search-results {
   position: absolute;
-  top: 65%; /* Đặt ngay dưới input */
-  left: 68px; /* Căn lề trái với khung nhập */
-  width: 200px; /* Đảm bảo rằng chiều rộng của kết quả tìm kiếm khớp với chiều rộng của input */
+  top: 65%;
+  left: 68px;
+  width: 200px;
   background: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 0 0 4px 4px; /* Bo tròn các góc dưới của khung kết quả */
-  z-index: 1000; /* Đảm bảo kết quả tìm kiếm hiển thị trên các thành phần khác */
+  border-radius: 0 0 4px 4px;
+  z-index: 1000;
 }
 
 .search-results div {
   padding: 10px;
-  border-top: 1px solid #eee; /* Thêm đường phân cách giữa các mục */
+  border-top: 1px solid #eee;
   cursor: pointer;
 }
 
 .search-results div:hover {
-  background-color: #f9f9f9; /* Hiệu ứng hover cho từng mục */
+  background-color: #f9f9f9;
+}
+.navbar .user-profile {
+  position: relative;
+  display: inline-block;
+}
+
+.navbar .profile-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+  background-color: #fff;
+  border: 2px solid #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navbar .profile-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  margin-right: 18px;
+}
+
+.navbar .dropdown-menu {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  min-width: 200px;
+  border-radius: 4px;
+  overflow: hidden;
+  opacity: 0; /* Bắt đầu với độ mờ bằng 0 */
+  visibility: hidden; /* Ẩn menu khi không hiển thị */
+  transform: translateY(
+    -10px
+  ); /* Dịch chuyển lên trên một chút để tạo hiệu ứng slide-in */
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease; /* Thêm hiệu ứng chuyển đổi */
+}
+
+.navbar .dropdown-menu.show {
+  opacity: 1; /* Hiển thị menu */
+  visibility: visible; /* Hiển thị menu */
+  transform: translateY(0); /* Đặt lại vị trí dịch chuyển */
+}
+
+.navbar .dropdown-menu div {
+  padding: 10px 20px;
+  cursor: pointer;
+  white-space: nowrap; /* Ngăn ngừa văn bản bị ngắt dòng */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+}
+
+.navbar .dropdown-menu div:hover {
+  background-color: #f0f0f0;
 }

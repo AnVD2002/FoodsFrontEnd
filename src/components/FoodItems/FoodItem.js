@@ -13,6 +13,17 @@ const FoodItem = (props) => {
     }
   };
 
+  const stars = [];
+  for (let i = 0; i < props.rating; i++) {
+    stars.push(
+      <img
+        key={i}
+        src={`${process.env.PUBLIC_URL}/assets/star_icon.png`}
+        alt=""
+      />
+    );
+  }
+
   return (
     <div className="food-item" onClick={() => handleOnclick()}>
       <div className="food-item-image-container">
@@ -25,10 +36,16 @@ const FoodItem = (props) => {
       <div className="food-item-info">
         <div className="food-item-name-rating">
           <p>{props.name}</p>
-          <img src="" alt="" />
         </div>
+        <div className="stars">{stars}</div>
         <p className="food-item-desc">{props.description}</p>
-        <p className="food-item-price">${props.price}</p>
+        <p className="food-item-price">
+          {props.price}đ
+          <i
+            className="fas fa-shopping-cart"
+            onClick={() => handleOnclick()}
+          ></i>
+        </p>
       </div>
     </div>
   );

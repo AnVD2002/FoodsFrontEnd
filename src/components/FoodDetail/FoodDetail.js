@@ -9,34 +9,35 @@ import Comments from "../Comment/Comments";
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
 import CartMessage from "../Popup/CartMessage";
+import FadeIn from "../Animation/FadeIn";
 
 const FoodDetail = () => {
   const { allFood } = useContext(ShopContext);
   const [food, setFood] = useState(null);
+  const [propertyDetails, setPropertyDetails] = useState([]);
+  const [selectedProperties, setSelectedProperties] = useState({});
   const { categoryId, foodId } = useParams();
+  const numFoodId = Number(foodId);
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupMessage, setPopupMessage] = useState("");
+
   useEffect(() => {
     const numCategoryId = Number(categoryId);
-    const numFoodId = Number(foodId);
     const food = allFood.find(
       (food) =>
         food.foodCategoryID === numCategoryId && food.foodID === numFoodId
     );
-
     setFood(food);
-  }, [categoryId, foodId, allFood]);
-  const [sizes, setSizes] = useState([]);
-  const [spicyLevels, setSpicyLevels] = useState([]);
-  const [toppings, setToppings] = useState([]);
+  }, [categoryId, numFoodId, allFood]);
+
   useEffect(() => {
     const fetchPropertyDetails = async () => {
       try {
         const response = await axios.get(
           `http://localhost:8080/api/v1/food/propertyDetailByFoodID?foodID=${foodId}`
         );
-        const data = response.data;
-        setSizes(data.filter((detail) => detail.propertyID === 1));
-        setSpicyLevels(data.filter((detail) => detail.propertyID === 2));
-        setToppings(data.filter((detail) => detail.propertyID === 3));
+        const data = response.data.body;
+        setPropertyDetails(data);
       } catch (error) {
         console.error("Error fetching property details:", error);
       }
@@ -44,7 +45,7 @@ const FoodDetail = () => {
 
     fetchPropertyDetails();
   }, [foodId]);
-  //getPrice
+
   const [lowestPrice, setLowestPrice] = useState(null);
   const [highestPrice, setHighestPrice] = useState(null);
 
@@ -56,24 +57,7 @@ const FoodDetail = () => {
     }
   }, [food]);
 
-  const [selectedSizeId, setSelectedSizeId] = useState(null);
-  const [selectedSpicyId, setSelectedSpicyId] = useState(null);
-  const [selectedToppingId, setSelectedToppingId] = useState(null);
-  const [quantity, setQuantity] = useState(1);
-  const [showPopup, setShowPopup] = useState(false);
-  const [popupMessage, setPopupMessage] = useState("");
-
-  const handleSizeSelection = (sizeId) => {
-    setSelectedSizeId(sizeId);
-  };
-  const handleSpicySelection = (spicyId) => {
-    setSelectedSpicyId(spicyId);
-  };
-  const handleToppingSelection = (toppingId) => {
-    setSelectedToppingId(toppingId);
-  };
-
-  const getUserIDFromToken = () => {
+  const getUserNameFromToken = () => {
     const token = Cookies.get("accessToken");
     if (token) {
       try {
@@ -88,21 +72,16 @@ const FoodDetail = () => {
       return null;
     }
   };
-  const userID = getUserIDFromToken();
-  const userNumberID = Number(userID);
+  const userName = getUserNameFromToken();
 
   const handleAddToCart = () => {
-    const propertyDetailIDs = [
-      selectedSizeId,
-      selectedSpicyId,
-      selectedToppingId,
-    ].filter((id) => id !== undefined);
+    const propertyDetailIDs = Object.values(selectedProperties);
 
     const data = {
       foodID: Number(foodId),
       propertyDetailID: propertyDetailIDs,
-      userID: userNumberID,
-      quantity: quantity,
+      userName: userName,
+      quantity: 1,
     };
 
     axios
@@ -126,116 +105,113 @@ const FoodDetail = () => {
       });
   };
 
+  const [rating, setRating] = useState(0);
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8080/api/v1/food/rating?foodID=${numFoodId}`)
+      .then((response) => {
+        setRating(Math.round(response.data.body));
+        console.log(response.data.body);
+      })
+      .catch((error) => console.error("Error fetching rating:", error));
+  }, [numFoodId]);
+
+  const stars = [];
+  for (let i = 0; i < rating; i++) {
+    stars.push(
+      <img
+        key={i}
+        src={`${process.env.PUBLIC_URL}/assets/star_icon.png`}
+        alt="star"
+      />
+    );
+  }
+
   if (!food) {
     return <p>Loading food details...</p>;
   }
 
-  return (
-    <div>
-      <div className="food-detail">
-        <div className="food-detail-left">
-          <img src={`${process.env.PUBLIC_URL}/assets/${food.image}`} alt="" />
-        </div>
-        {showPopup &&
-          (console.log(showPopup),
-          (
-            <CartMessage show={showPopup} message={popupMessage}></CartMessage>
-          ))}
-        <div className="food-detail-right">
-          <h1>{food.foodName}</h1>
-          <div className="food-display-star">
-            <img
-              src={`${process.env.PUBLIC_URL}/assets/star_icon.png`}
-              alt=""
-            />
-            <img
-              src={`${process.env.PUBLIC_URL}/assets/star_icon.png`}
-              alt=""
-            />
-            <img
-              src={`${process.env.PUBLIC_URL}/assets/star_icon.png`}
-              alt=""
-            />
-            <img
-              src={`${process.env.PUBLIC_URL}/assets/star_icon.png`}
-              alt=""
-            />
-            <img
-              src={`${process.env.PUBLIC_URL}/assets/star_icon.png`}
-              alt=""
-            />
-          </div>
-          <div className="food-detail-price">
-            <div className="food-detail-prices">
-              {lowestPrice !== null && (
-                <div className="food-detail-lowest-price">
-                  Lowest Price: ${lowestPrice}
-                </div>
-              )}
-              {highestPrice !== null && (
-                <div className="food-detail-highest-price">
-                  Highest Price: ${highestPrice}
-                </div>
-              )}
-            </div>
-          </div>
-          <div className="food-detail-description">{food.description}</div>
-          <div className="food-detail-size">
-            {sizes.map((size) => (
-              <div
-                key={size.propertyDetailID}
-                className={`food-detail-sizes ${
-                  selectedSizeId === size.propertyDetailID ? "selected" : ""
-                }`}
-                onClick={() => handleSizeSelection(size.propertyDetailID)}
-              >
-                {size.propertyDetailName}
-              </div>
-            ))}
-          </div>
-          <div className="food-detail-spicy">
-            {spicyLevels.map((spicy) => (
-              <div
-                key={spicy.propertyDetailID}
-                className={`food-detail-spicy ${
-                  selectedSpicyId === spicy.propertyDetailID ? "selected" : ""
-                }`}
-                onClick={() => handleSpicySelection(spicy.propertyDetailID)}
-              >
-                {spicy.propertyDetailName}
-              </div>
-            ))}
-          </div>
-          <div className="food-detail-topping">
-            {toppings.map((topping) => (
-              <div
-                key={topping.propertyDetailID}
-                className={`food-detail-topping ${
-                  selectedToppingId === topping.propertyDetailID
+  const handlePropertySelect = (propertyID, propertyDetailID) => {
+    setSelectedProperties((prev) => ({
+      ...prev,
+      [propertyID]: propertyDetailID,
+    }));
+  };
+
+  const renderPropertyDetails = () => {
+    const groupedProperties = propertyDetails.reduce((acc, detail) => {
+      if (!acc[detail.propertyID]) {
+        acc[detail.propertyID] = {
+          propertyName: detail.propertyName,
+          details: [],
+        };
+      }
+      acc[detail.propertyID].details.push(detail);
+      return acc;
+    }, {});
+
+    return Object.keys(groupedProperties).map((propertyID) => (
+      <div key={propertyID} className="property-group">
+        <h3 className="property-name">
+          {groupedProperties[propertyID].propertyName}
+        </h3>
+        <div className="property-options">
+          {groupedProperties[propertyID].details.map((detail) => (
+            <div key={detail.propertyDetailID}>
+              <button
+                onClick={() =>
+                  handlePropertySelect(
+                    detail.propertyID,
+                    detail.propertyDetailID
+                  )
+                }
+                className={
+                  selectedProperties[detail.propertyID] ===
+                  detail.propertyDetailID
                     ? "selected"
                     : ""
-                }`}
-                onClick={() => handleToppingSelection(topping.propertyDetailID)}
+                }
               >
-                {topping.propertyDetailName}
-              </div>
-            ))}
-          </div>
-          <div className="food-detail-quantity">
-            <button
-              onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}
-            >
-              -
-            </button>
-            <span className="quantity-number">{quantity}</span>
-            <button onClick={() => setQuantity(quantity + 1)}>+</button>
-          </div>
-          <button onClick={handleAddToCart}>ADD TO CART</button>
+                {detail.propertyDetailName}
+              </button>
+            </div>
+          ))}
         </div>
       </div>
-      <Comments foodID={Number(foodId)}></Comments>
+    ));
+  };
+
+  return (
+    <div>
+      <FadeIn>
+        <div className="food-detail-container">
+          <div className="food-detail-image-container">
+            <img
+              src={`${process.env.PUBLIC_URL}/assets/${food.image}`}
+              alt={food.foodName}
+            />
+          </div>
+          <div className="food-detail-info">
+            <h1 className="food-name">{food.foodName}</h1>
+            <p className="food-description">{food.description}</p>
+            <div className="food-prices">
+              <div>Lowest Price: {lowestPrice}</div>
+              <div>Highest Price: {highestPrice}</div>
+            </div>
+            <div className="food-rating">{stars}</div>
+            <div className="food-property">
+              <div className="property-options">{renderPropertyDetails()}</div>
+            </div>
+            <button className="add-to-cart-btn" onClick={handleAddToCart}>
+              Add to Cart
+            </button>
+            <CartMessage show={showPopup} message={popupMessage} />
+          </div>
+        </div>
+        <Comments foodID={Number(foodId)} />
+      </FadeIn>
     </div>
   );
 };
-
 export default FoodDetail;

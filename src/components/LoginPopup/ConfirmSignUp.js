@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import "./ConfirmSignUp.css";
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "./Confirm.css";
 
 const ConfirmSignUp = () => {
   const location = useLocation();
@@ -16,7 +16,11 @@ const ConfirmSignUp = () => {
       console.log(location.state.accountInfo);
       setAccountInfo(location.state.accountInfo);
     }
-  }, [location.state]); // Chỉ phụ thuộc vào location.state
+  }, [location.state]);
+
+  const handleCloseForm = () => {
+    navigate("/");
+  };
 
   const handleChange = (e) => {
     setCode(e.target.value);
@@ -37,16 +41,13 @@ const ConfirmSignUp = () => {
     try {
       const response = await axios.post(
         "http://localhost:8080/api/v1/account/confirmAccount",
-        confirmRequest,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+        confirmRequest
       );
       if (response.status === 200) {
         console.log("Registration confirmed successfully.");
         navigate("/");
+      } else {
+        console.log(response.data.body);
       }
     } catch (error) {
       console.error(
@@ -66,6 +67,7 @@ const ConfirmSignUp = () => {
         <div className="confirm-signup-title">
           <h2>Confirm SignUp</h2>
           <img
+            onClick={handleCloseForm}
             src={`${process.env.PUBLIC_URL}/assets/cross_icon.png`}
             alt="Close"
           />
